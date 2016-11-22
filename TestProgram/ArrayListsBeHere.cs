@@ -16,6 +16,7 @@ namespace TestProgram
 
         public ArrayListsBeHere()
         {
+            ArrayList x = new ArrayList();
         }
 
 
