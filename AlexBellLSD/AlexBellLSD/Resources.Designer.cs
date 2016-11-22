@@ -71,7 +71,7 @@ namespace AlexBellLSD {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field &apos;{0}&apos; is marked static.
+        ///   Looks up a localized string similar to &apos;{0}&apos; is an arraylist.
         /// </summary>
         internal static string AnalyzerMessageFormat {
             get {
