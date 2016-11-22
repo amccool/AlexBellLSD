@@ -62,7 +62,7 @@ namespace AlexBellLSD {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Static variable found.
+        ///   Looks up a localized string similar to Found a non-generic collection.
         /// </summary>
         internal static string AnalyzerDescription {
             get {
@@ -80,7 +80,7 @@ namespace AlexBellLSD {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field is marked static.
+        ///   Looks up a localized string similar to Found a non-generic collection.
         /// </summary>
         internal static string AnalyzerTitle {
             get {

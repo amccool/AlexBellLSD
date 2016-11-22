@@ -36,19 +36,37 @@ namespace AlexBellLSD
 
         public override void Initialize(AnalysisContext context)
         {
-            context.RegisterSyntaxNodeAction(AnalyzeNode, SyntaxKind.TypeKeyword);
+            //context.RegisterSyntaxNodeAction(AnalyzeNode, SyntaxKind.TypeKeyword);
+            context.RegisterCompilationStartAction(AnalyzeArrayList);
+        }
+
+        private static void AnalyzeArrayList(CompilationStartAnalysisContext compilationContext)
+        {
+            var arrayListType = compilationContext.Compilation.GetTypeByMetadataName("System.Collections.ArrayList");
+
+            compilationContext.RegisterSyntaxNodeAction(syntaxContext =>
+            {
+                var variableTypeInfo = syntaxContext.SemanticModel.GetTypeInfo(syntaxContext.Node).Type as INamedTypeSymbol;
+
+                if (variableTypeInfo == null)
+                    return;
+
+                if (variableTypeInfo.Equals(arrayListType))
+                {
+                    syntaxContext.ReportDiagnostic(Diagnostic.Create(Rule, syntaxContext.Node.GetLocation()));
+                }
+            }, SyntaxKind.ObjectCreationExpression);
         }
 
         private void AnalyzeNode(SyntaxNodeAnalysisContext context)
         {
-            var arrayListType = compilationContext.Compilation.GetTypeByMetadataName("System.Collections.ArrayList");
+            //var arrayListType = compilationContext.Compilation.GetTypeByMetadataName("System.Collections.ArrayList");
 
             var typeInfo = context.SemanticModel.GetTypeInfo(context.Node);
 
-            //if (typeInfo == null)
-            //    return;
-
-            if (typeInfo.Equals(arrayListType))
+            //if (typeInfo.Equals(arrayListType))
+            //typeInfo.Type.
+            if (typeInfo.Type.Kind == SymbolKind.ArrayType )
             {
 
                 var diagnostic = Diagnostic.Create(Rule, context.Node.GetLocation());
