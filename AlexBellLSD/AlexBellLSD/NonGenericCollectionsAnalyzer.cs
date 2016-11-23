@@ -69,15 +69,19 @@ namespace AlexBellLSD
             var rightNodes = from y in propertyDeclarationSyntax.ChildNodes()
                              where y.Kind() == SyntaxKind.IdentifierName
                 select y;
-            var ident = (IdentifierNameSyntax) rightNodes.First();
-
-            var variableTypeInfo = context.SemanticModel.GetTypeInfo(ident).Type as INamedTypeSymbol;
-
-            if (UnwantedCollectionTypes.Contains(variableTypeInfo))
+            if (rightNodes.Any())
             {
-                var variableName = propertyDeclarationSyntax.Identifier.ValueText;
-                var diagnostic = Diagnostic.Create(PropertyRule, propertyDeclarationSyntax.GetLocation(), variableName);
-                context.ReportDiagnostic(diagnostic);
+                var ident = (IdentifierNameSyntax) rightNodes.First();
+
+                var variableTypeInfo = context.SemanticModel.GetTypeInfo(ident).Type as INamedTypeSymbol;
+
+                if (UnwantedCollectionTypes.Contains(variableTypeInfo))
+                {
+                    var variableName = propertyDeclarationSyntax.Identifier.ValueText;
+                    var diagnostic = Diagnostic.Create(PropertyRule, propertyDeclarationSyntax.GetLocation(),
+                        variableName);
+                    context.ReportDiagnostic(diagnostic);
+                }
             }
         }
 
@@ -91,21 +95,27 @@ namespace AlexBellLSD
                              where y.Kind() == SyntaxKind.VariableDeclaration
                              select y;
 
-            var rightNodes = from y in varNodes.First().ChildNodes()
-                             where y.Kind() == SyntaxKind.IdentifierName
-                             select y;
-            var ident = (IdentifierNameSyntax) rightNodes.First();
-
-            var variableTypeInfo = context.SemanticModel.GetTypeInfo(ident).Type as INamedTypeSymbol;
-
-            if (variableTypeInfo == null)
-                return;
-
-            if (UnwantedCollectionTypes.Contains(variableTypeInfo))
+            if (varNodes.Any())
             {
-                var variableName = fieldDeclarationNode.Declaration.Variables.First().Identifier.ValueText;
-                var diagnostic = Diagnostic.Create(FieldRule, fieldDeclarationNode.GetLocation(), variableName);
-                context.ReportDiagnostic(diagnostic);
+                var rightNodes = from y in varNodes.First().ChildNodes()
+                    where y.Kind() == SyntaxKind.IdentifierName
+                    select y;
+                if (rightNodes.Any())
+                {
+                    var ident = (IdentifierNameSyntax) rightNodes.First();
+
+                    var variableTypeInfo = context.SemanticModel.GetTypeInfo(ident).Type as INamedTypeSymbol;
+
+                    if (variableTypeInfo == null)
+                        return;
+
+                    if (UnwantedCollectionTypes.Contains(variableTypeInfo))
+                    {
+                        var variableName = fieldDeclarationNode.Declaration.Variables.First().Identifier.ValueText;
+                        var diagnostic = Diagnostic.Create(FieldRule, fieldDeclarationNode.GetLocation(), variableName);
+                        context.ReportDiagnostic(diagnostic);
+                    }
+                }
             }
         }
 
@@ -126,22 +136,22 @@ namespace AlexBellLSD
                 where y.Kind() == SyntaxKind.SimpleBaseType
                 select y;
 
-
-
-
-
-            foreach (var node in rightNodes.First().ChildNodes())
+            if (rightNodes.Any())
             {
-                var variableTypeInfo = context.SemanticModel.GetTypeInfo(node).Type as INamedTypeSymbol;
 
-                if (variableTypeInfo == null)
-                    continue;
-
-                if (UnwantedCollectionTypes.Contains(variableTypeInfo))
+                foreach (var node in rightNodes.First().ChildNodes())
                 {
-                    var variableName = classDeclarationNode.Identifier.ValueText;
-                    var diagnostic = Diagnostic.Create(ClassRule, classDeclarationNode.GetLocation(), variableName);
-                    context.ReportDiagnostic(diagnostic);
+                    var variableTypeInfo = context.SemanticModel.GetTypeInfo(node).Type as INamedTypeSymbol;
+
+                    if (variableTypeInfo == null)
+                        continue;
+
+                    if (UnwantedCollectionTypes.Contains(variableTypeInfo))
+                    {
+                        var variableName = classDeclarationNode.Identifier.ValueText;
+                        var diagnostic = Diagnostic.Create(ClassRule, classDeclarationNode.GetLocation(), variableName);
+                        context.ReportDiagnostic(diagnostic);
+                    }
                 }
             }
         }
