@@ -23,15 +23,15 @@ namespace AlexBellLSD
         private const string Category = "Design";
 
         private static DiagnosticDescriptor PropertyRule = 
-            new DiagnosticDescriptor(DiagnosticId, "property", "{0} is a non-generic collection", Category,
+            new DiagnosticDescriptor(DiagnosticId, "property", "property '{0}' is a non-generic collection", Category,
                 DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
         private static DiagnosticDescriptor FieldRule = 
-            new DiagnosticDescriptor(DiagnosticId, "field", "{0} is a non-generic collection", Category, 
+            new DiagnosticDescriptor(DiagnosticId, "field", "field '{0}' is a non-generic collection", Category, 
                 DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
         private static DiagnosticDescriptor ClassRule =
-            new DiagnosticDescriptor(DiagnosticId, "class", "{0} is a non-generic collection", Category,
+            new DiagnosticDescriptor(DiagnosticId, "class", "class '{0}' inherits from a non-generic collection", Category,
                 DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
 
@@ -140,7 +140,7 @@ namespace AlexBellLSD
                 if (UnwantedCollectionTypes.Contains(variableTypeInfo))
                 {
                     var variableName = classDeclarationNode.Identifier.ValueText;
-                    var diagnostic = Diagnostic.Create(FieldRule, classDeclarationNode.GetLocation(), variableName);
+                    var diagnostic = Diagnostic.Create(ClassRule, classDeclarationNode.GetLocation(), variableName);
                     context.ReportDiagnostic(diagnostic);
                 }
             }

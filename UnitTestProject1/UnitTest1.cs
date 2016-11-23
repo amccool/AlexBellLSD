@@ -38,7 +38,7 @@ namespace TestProgram
             var expected = new DiagnosticResult
             {
                 Id = NonGenericCollectionsAnalyzer.DiagnosticId,
-                Message = "Junky is a non-generic collection",
+                Message = "class 'Junky' inherits from a non-generic collection",
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[]
@@ -76,7 +76,7 @@ namespace TestProgram
             var expected = new DiagnosticResult
             {
                 Id = NonGenericCollectionsAnalyzer.DiagnosticId,
-                Message = "_IhateTheseThings is a non-generic collection",
+                Message = "field '_IhateTheseThings' is a non-generic collection",
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[]
@@ -114,7 +114,7 @@ namespace TestProgram
             var expected = new DiagnosticResult
             {
                 Id = NonGenericCollectionsAnalyzer.DiagnosticId,
-                Message = "Stilhated is a non-generic collection",
+                Message = "property 'Stilhated' is a non-generic collection",
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[]
