@@ -84,7 +84,19 @@ namespace AlexBellLSD
         private void AnalyzeFieldNode(SyntaxNodeAnalysisContext context)
         {
             var fieldDeclarationNode = (FieldDeclarationSyntax) context.Node;
-            var variableTypeInfo = context.SemanticModel.GetTypeInfo(context.Node).Type as INamedTypeSymbol;
+
+            var nodes = fieldDeclarationNode.ChildNodes();
+
+            var varNodes = from y in fieldDeclarationNode.ChildNodes()
+                             where y.Kind() == SyntaxKind.VariableDeclaration
+                             select y;
+
+            var rightNodes = from y in varNodes.First().ChildNodes()
+                             where y.Kind() == SyntaxKind.IdentifierName
+                             select y;
+            var ident = (IdentifierNameSyntax) rightNodes.First();
+
+            var variableTypeInfo = context.SemanticModel.GetTypeInfo(ident).Type as INamedTypeSymbol;
 
             if (variableTypeInfo == null)
                 return;
@@ -105,13 +117,25 @@ namespace AlexBellLSD
             if (classDeclarationNode.BaseList == null)
                 return;
 
+            var baseSyntax = classDeclarationNode.BaseList;
 
-            foreach (var baseType in classDeclarationNode.BaseList.Types)
+
+            var nodes = baseSyntax.ChildNodes();
+
+            var rightNodes = from y in nodes
+                where y.Kind() == SyntaxKind.SimpleBaseType
+                select y;
+
+
+
+
+
+            foreach (var node in rightNodes.First().ChildNodes())
             {
-                var variableTypeInfo = context.SemanticModel.GetTypeInfo(baseType).Type as INamedTypeSymbol;
+                var variableTypeInfo = context.SemanticModel.GetTypeInfo(node).Type as INamedTypeSymbol;
 
                 if (variableTypeInfo == null)
-                    return;
+                    continue;
 
                 if (UnwantedCollectionTypes.Contains(variableTypeInfo))
                 {

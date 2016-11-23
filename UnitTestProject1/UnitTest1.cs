@@ -38,12 +38,12 @@ namespace TestProgram
             var expected = new DiagnosticResult
             {
                 Id = NonGenericCollectionsAnalyzer.DiagnosticId,
-                //Message = String.Format("Type name '{0}' contains lowercase letters","TypeName"),
+                Message = "Junky is a non-generic collection",
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[]
                     {
-                        new DiagnosticResultLocation("Test0.cs", 6, 13)
+                        new DiagnosticResultLocation("Test0.cs", 7, 5)
                     }
             };
 
@@ -70,30 +70,18 @@ namespace TestProgram
     {
         public ArrayList _IhateTheseThings;
 
-        public ArrayList Stilhated { get; set; }
-
-        public ArrayListsBeHere()
-        {
-            ArrayList x = new ArrayList();
-        }
-
-
-        private void AnotherDisaster()
-        {
-            ArrayList thesesuck = new ArrayList();
-        }
     }
 }";
 
             var expected = new DiagnosticResult
             {
                 Id = NonGenericCollectionsAnalyzer.DiagnosticId,
-                //Message = string.Format("Type name '{0}' contains lowercase letters", "TypeName"),
+                Message = "_IhateTheseThings is a non-generic collection",
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[]
                     {
-                        new DiagnosticResultLocation("Test0.cs", 6, 13)
+                        new DiagnosticResultLocation("Test0.cs", 14, 9)
                     }
             };
 
@@ -119,32 +107,19 @@ namespace TestProgram
 {
     class ArrayListsBeHere
     {
-        public ArrayList _IhateTheseThings;
-
         public ArrayList Stilhated { get; set; }
-
-        public ArrayListsBeHere()
-        {
-            ArrayList x = new ArrayList();
-        }
-
-
-        private void AnotherDisaster()
-        {
-            ArrayList thesesuck = new ArrayList();
-        }
     }
 }";
 
             var expected = new DiagnosticResult
             {
                 Id = NonGenericCollectionsAnalyzer.DiagnosticId,
-                //Message = string.Format("Type name '{0}' contains lowercase letters", "TypeName"),
+                Message = "Stilhated is a non-generic collection",
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[]
                     {
-                        new DiagnosticResultLocation("Test0.cs", 6, 13)
+                        new DiagnosticResultLocation("Test0.cs", 14, 9)
                     }
             };
 
