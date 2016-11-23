@@ -38,7 +38,7 @@ namespace TestProgram
             var expected = new DiagnosticResult
             {
                 Id = NonGenericCollectionsAnalyzer.DiagnosticId,
-                Message = String.Format("Type name '{0}' contains lowercase letters","TypeName"),
+                //Message = String.Format("Type name '{0}' contains lowercase letters","TypeName"),
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[]
@@ -88,7 +88,7 @@ namespace TestProgram
             var expected = new DiagnosticResult
             {
                 Id = NonGenericCollectionsAnalyzer.DiagnosticId,
-                Message = string.Format("Type name '{0}' contains lowercase letters", "TypeName"),
+                //Message = string.Format("Type name '{0}' contains lowercase letters", "TypeName"),
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[]
@@ -139,7 +139,7 @@ namespace TestProgram
             var expected = new DiagnosticResult
             {
                 Id = NonGenericCollectionsAnalyzer.DiagnosticId,
-                Message = string.Format("Type name '{0}' contains lowercase letters", "TypeName"),
+                //Message = string.Format("Type name '{0}' contains lowercase letters", "TypeName"),
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[]

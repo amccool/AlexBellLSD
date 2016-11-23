@@ -66,10 +66,12 @@ namespace AlexBellLSD
         {
             var propertyDeclarationSyntax = (PropertyDeclarationSyntax) context.Node;
 
-            var variableTypeInfo = context.SemanticModel.GetTypeInfo(context.Node).Type as INamedTypeSymbol;
+            var rightNodes = from y in propertyDeclarationSyntax.ChildNodes()
+                             where y.Kind() == SyntaxKind.IdentifierName
+                select y;
+            var ident = (IdentifierNameSyntax) rightNodes.First();
 
-            if (variableTypeInfo == null)
-                return;
+            var variableTypeInfo = context.SemanticModel.GetTypeInfo(ident).Type as INamedTypeSymbol;
 
             if (UnwantedCollectionTypes.Contains(variableTypeInfo))
             {
