@@ -50,6 +50,40 @@ namespace TestProgram
             VerifyCSharpDiagnostic(test, expected);
         }
 
+        [TestMethod]
+        public void VariableDeclarationTest()
+        {
+            var test = @"
+using System;
+using System.Collections;
+
+namespace TestProgram
+{
+    internal class BadVariableClass
+    {
+        public void TestMethod()
+        {
+            ArrayList badList = new ArrayList();
+        }
+    }
+}
+";
+            var expected = new DiagnosticResult()
+            {
+                Id = NonGenericCollectionsAnalyzer.DiagnosticId,
+                Message = "variable 'badList' is a non-generic collection",
+                Severity = DiagnosticSeverity.Warning,
+                Locations =
+                    new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 13)
+                    }
+            };
+
+            VerifyCSharpDiagnostic(test, expected);
+        }
+
+
 
         [TestMethod]
         public void FieldTest()

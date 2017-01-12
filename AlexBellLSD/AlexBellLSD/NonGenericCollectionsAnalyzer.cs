@@ -34,9 +34,13 @@ namespace AlexBellLSD
             new DiagnosticDescriptor(DiagnosticId, "class", "class '{0}' inherits from a non-generic collection", Category,
                 DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
+        private static DiagnosticDescriptor VariableRule =
+            new DiagnosticDescriptor(DiagnosticId, "variable", "variable '{0}' is a non-generic collection", Category,
+                DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(PropertyRule, FieldRule, ClassRule);
+            ImmutableArray.Create(PropertyRule, FieldRule, ClassRule, VariableRule);
 
         public static List<INamedTypeSymbol> UnwantedCollectionTypes { get; private set; }
 
@@ -50,7 +54,32 @@ namespace AlexBellLSD
 
             context.RegisterSyntaxNodeAction(AnalyzeClassNode, SyntaxKind.ClassDeclaration);
 
+            context.RegisterSyntaxNodeAction(AnalyzeVariableNode, SyntaxKind.VariableDeclaration);
 
+        }
+
+        private void AnalyzeVariableNode(SyntaxNodeAnalysisContext context)
+        {
+            var variableDeclarationSyntaxNode = (VariableDeclarationSyntax) context.Node;
+
+            if (variableDeclarationSyntaxNode.Parent.IsKind(SyntaxKind.FieldDeclaration)) return;
+
+            var identifierNameSyntaxForTypeNode = variableDeclarationSyntaxNode.Type as IdentifierNameSyntax;
+
+            var typeIdentifierAsNamedTypeSymbol = context.SemanticModel.GetTypeInfo(identifierNameSyntaxForTypeNode).Type as INamedTypeSymbol;
+
+            if (UnwantedCollectionTypes.Contains(typeIdentifierAsNamedTypeSymbol))
+            {
+                var variableIdentifiersInDeclarationStatement = variableDeclarationSyntaxNode.Variables;
+
+                foreach (var variableDeclarator in variableIdentifiersInDeclarationStatement)
+                {
+                    var variableName = variableDeclarator.Identifier.ValueText;
+                    var diagnostic = Diagnostic.Create(VariableRule, variableDeclarationSyntaxNode.GetLocation(),
+                        variableName);
+                    context.ReportDiagnostic(diagnostic);
+                }
+            }
         }
 
         private static void SetupUnWantedCollectionTypes(CompilationStartAnalysisContext compilationContext)
