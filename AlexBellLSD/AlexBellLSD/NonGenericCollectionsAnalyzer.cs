@@ -35,7 +35,7 @@ namespace AlexBellLSD
                 DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
         private static DiagnosticDescriptor VariableRule =
-            new DiagnosticDescriptor(DiagnosticId, "variable", "variable '{0}' inherits from a non-generic collection", Category,
+            new DiagnosticDescriptor(DiagnosticId, "variable", "variable '{0}' is a non-generic collection", Category,
                 DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
 
@@ -61,6 +61,8 @@ namespace AlexBellLSD
         private void AnalyzeVariableNode(SyntaxNodeAnalysisContext context)
         {
             var variableDeclarationSyntaxNode = (VariableDeclarationSyntax) context.Node;
+
+            if (variableDeclarationSyntaxNode.Parent.IsKind(SyntaxKind.FieldDeclaration)) return;
 
             var identifierNameSyntaxForTypeNode = variableDeclarationSyntaxNode.Type as IdentifierNameSyntax;
 

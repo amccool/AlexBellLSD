@@ -71,7 +71,7 @@ namespace TestProgram
             var expected = new DiagnosticResult()
             {
                 Id = NonGenericCollectionsAnalyzer.DiagnosticId,
-                Message = "variable 'badList' inherits from a non-generic collection",
+                Message = "variable 'badList' is a non-generic collection",
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[]
