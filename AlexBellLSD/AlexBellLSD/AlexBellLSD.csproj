@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="NonGenericCollectionsAnalyzer.cs" />
+    <Compile Include="UnawaitedTaskAnalyzer.cs" />
     <Compile Include="NoRethrowAnalyzer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">

@@ -9,7 +9,7 @@ using TestHelper;
 namespace UnitTestProject1
 {
     [TestClass]
-    public class UnitTest : CodeFixVerifier
+    public class ArrayListFinderTest : CodeFixVerifier
     {
         [TestMethod]
         public void TestMethod1()
