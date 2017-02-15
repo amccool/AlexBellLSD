@@ -31,7 +31,7 @@ namespace AlexBellLSD
         {
             var invocationSyntaxNode = (InvocationExpressionSyntax) obj.Node;
 
-            invocationSyntaxNode.ret
+            invocationSyntaxNode.k
 
             var catchClauseBlock = catchClauseSyntaxNode.Block;
 
